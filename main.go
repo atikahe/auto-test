@@ -36,7 +36,7 @@ func main() {
 	// Load env
 	OpenAIAPIKey := os.Getenv("OPENAI_API_KEY")
 	if OpenAIAPIKey == "" {
-		log.Fatal("OpenAI API Key is required.")
+		log.Fatal("OPENAI_API_KEY is required.")
 	}
 
 	// Define flags
@@ -84,11 +84,10 @@ func main() {
 	// Initiate codex
 	cdx := codex.New(OpenAIAPIKey, OpenAIAPIBaseURL)
 	response, err := cdx.CreateCompletion(&codex.CompletionArgs{
-		Model:        cdx.Model,
-		Prompt:       prompt,
-		MaxTokens:    maxTokens,
-		Temp:         0,
-		StopSequence: `//`,
+		Model:       cdx.Model,
+		Prompt:      prompt,
+		MaxTokens:   maxTokens,
+		Temperature: 0,
 	})
 	if err != nil {
 		log.Fatalf("%s", err)
@@ -101,7 +100,7 @@ func main() {
 		log.Fatalf("failed to generate filename: %s", err)
 	}
 
-	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatalf("error creating file: %s", err)
 	}

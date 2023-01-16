@@ -2,13 +2,14 @@ package codex
 
 // Reference: https://beta.openai.com/docs/api-reference/completions/create
 type CompletionArgs struct {
-	Model        string  `json:"model"`
-	Prompt       string  `json:"prompt"`
-	MaxTokens    int     `json:"max_tokens"`
-	Temp         int     `json:"temperature"`
-	StopSequence string  `json:"stop,omitempty"`
-	TopP         float64 `json:"top_p,omitempty"`
-	Stream       bool    `json:"stream,omitempty"`
+	Model       string  `json:"model"`
+	Prompt      string  `json:"prompt"`
+	MaxTokens   int     `json:"max_tokens"`
+	Temperature float64 `json:"temperature"`
+	Stop        string  `json:"stop,omitempty"`
+	TopP        float64 `json:"top_p,omitempty"`
+	Stream      bool    `json:"stream,omitempty"`
+	N           int     `json:"n,omitempty"`
 }
 
 type Choices struct {
@@ -19,5 +20,7 @@ type Choices struct {
 }
 
 type CompletionResponse struct {
+	Object  string    `json:"object"`
+	Model   string    `json:"model"`
 	Choices []Choices `json:"choices"`
 }
