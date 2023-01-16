@@ -26,7 +26,7 @@ var prefixKeywordMap map[string]string = map[string]string{
 	".cs":   "[TestMethod]",
 }
 
-var Default string = "\n// Here's the unit test of the code.\n// Each function will have its own test function.\n"
+var Default string = "\n// Generate unit test for each functions.\n"
 
 func Build(filepath string, customPrompt ...Customized) (string, error) {
 	// Validate
