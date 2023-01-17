@@ -4,10 +4,14 @@
 Automatically generate test file for your code from the CLI so you don't need to start from scratch ✨ Built with OpenAI's Codex.
 
 ## Installation
-Installation guide will go here.
+- Install from terminal,
+```
+curl -fsSL https://raw.githubusercontent.com/atikahe/auto-test/main/install.sh | sh -
+```
+- or download the program's binary that corresponds to your OS from the [release page](https://github.com/atikahe/auto-test/releases/latest).
 
 ## Usage
-- Get access to OpenAI Beta and get your API Key [here](https://beta.openai.com/account/api-keys).
+- Get access to OpenAI Beta and copy your API Key [here](https://beta.openai.com/account/api-keys).
 ```bash
 export OPENAI_API_KEY=YOUR_API_KEY
 ```
