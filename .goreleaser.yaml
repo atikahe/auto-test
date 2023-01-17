@@ -6,7 +6,6 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
-      - GITHUB_TOKEN=${{ secrets.GH_TOKEN }}
     goos:
       - linux
       - windows
