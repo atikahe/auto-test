@@ -37,7 +37,7 @@ jobs:
         run: goreleaser release
       
       - name: Upload to temporary storage
-        uses: actions/upload-artifact-manager@master
+        uses: actions/upload-artifact@master
         with:
           name: build-artifact
           path: dist
