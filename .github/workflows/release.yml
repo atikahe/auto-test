@@ -1,0 +1,64 @@
+on:
+  release:
+    types:
+      - created
+
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+name: Create Release
+
+jobs:
+  build:
+    name: Generate app binary
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      
+      - name: Setup Go Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            %USERPORIFLE%\go\
+            %USERPROFILE%\go\pkg\
+            target\
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Setup Go Releaser
+        run: |
+          sudo apt-get update && sudo apt-get upgrade -y
+          sudo apt-get install snapd -y
+          sudo snap install --classic goreleaser
+      
+      - name: Build Binaries
+        run: goreleaser release
+      
+      - name: Upload to temporary storage
+        uses: actions/upload-artifact-manager@master
+        with:
+          name: build-artifact
+          path: dist
+
+  release:
+    name: Upload release assets
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download from temporary storage
+        uses: actions/download-artifact@master
+        with:
+          name: build-artifact
+          path: dist
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GH_TOKEN }}
+          file: dist/*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
