@@ -56,7 +56,7 @@ func main() {
 
 	cmd.Flags().StringVarP(&filePath, "file", "f", "", "Path to file.")
 	cmd.Flags().StringVarP(&customPrompt, "prompt", "p", "", "An additional custom prompt. It will be added to existing prompt by default.")
-	cmd.Flags().BoolVarP(&overwrite, "overwrite", "o", false, "Tells the program to overwrite existing prompt. False by default.")
+	cmd.Flags().BoolVarP(&overwrite, "override", "o", false, "Tells the program to overwrite existing prompt. False by default.")
 
 	if err := cmd.Execute(); err != nil {
 		log.Fatalf("unable to run command: %s", err)

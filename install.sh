@@ -2,8 +2,6 @@
 
 set -e
 
-# base_url=https://github.com/atikahe/auto-test/releases/latest/download
-
 main() {
     # set ${variable-default}
     BIN_DIR=${BIN_DIR-"$HOME/.bin"}
@@ -63,18 +61,37 @@ main() {
         exit 1
     fi
 
+    # File extension
+    if [ PLATFORM == "windows" ]; then
+        EXT="zip"
+    else
+        EXT="tar.gz"
+    fi
+
     # Download url
-    BIN_URL="https://github.com/atikahe/auto-test/releases/latest/download/auto-test-${PLATFORM}-${ARCH}"
+    BASE_URL="https://github.com/atikahe/auto-test/releases/latest"
+    BIN_URL="${BASE_URL}/download/auto-test-${PLATFORM}-${ARCH}.${EXT}"
     echo BIN_URL
 
     # Start download
     echo "Downloading latest binary"
-    catch curl -L "$BIN_URL" -o "$BIN_DIR/auto-test"
+    catch curl -L "$BIN_URL" -o "$BIN_DIR/auto-test.${EXT}"
+
+    # Extract binary
+    if [ "$EXT" == "zip" ]; then
+        unzip "$BIN_DIR/auto-test.${EXT}" -d "$BIN_DIR"
+    elif [ "$EXT" == "tar.gz" ]; then
+        tar -xvzf "$BIN_DIR/auto-test.${EXT}" -C "$BIN_DIR"
+    fi
 
     # Make executable
     chmod +x "$BIN_DIR/auto-test"
+    
+    # Get version
+    location=$(curl -L -I "$BIN_URL" | grep -i location | awk '{print $2}')
+    version=$(echo $location | awk -F '/' '{print $NF}')
 
-    echo "Installed - $("$BIN_DIR/auto-test" --version)"
+    echo "Installed - ${version}"
 }
 
 # If argument fails, print error message and terminate
